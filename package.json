@@ -1,0 +1,23 @@
+{
+  "name": "incommingcallapi",
+  "version": "1.0.0",
+  "description": "api integration for incomming call",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "env": "0.0.2",
+    "express": "^4.17.1",
+    "http": "0.0.1-security",
+    "mongodb": "^3.5.9",
+    "mongoose": "^5.9.25",
+    "nodemon": "^2.0.4",
+    "twilio": "^3.48.1",
+    "twilio-client": "^1.12.1"
+  }
+}
