@@ -11,6 +11,7 @@ Router.get('/', cr.outgoing ,(req,res) => {
     })
 })
 
+
 Router.route('/incomingCall')
     .post(callrecord.incommingCall)
 
@@ -57,7 +58,16 @@ Router.route('/defaultMsg')
 Router.route('/menu')
     .post(ivr.menu)
 
-Router.route('/onDigitCall')
-    .post(ivr.onDigitCall)
+Router.route('/onDigitCallM')
+    .post(ivr.onDigitCallM)
+
+Router.route('/onDigitCallS')
+    .post(ivr.onDigitCallS)
+
+Router.route('/addDigit')
+    .post(ivr.addDigit)
+
+Router.route('/getDigit')
+    .get(ivr.getDigit)
 
 module.exports = Router;

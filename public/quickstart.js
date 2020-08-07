@@ -7,7 +7,7 @@
 
   var device;
   log('Requesting Capability Token...');
-  $.getJSON('https://8c423bda22ee.ngrok.io/api/capability-token')
+  $.getJSON('https://c91de5a03c10.ngrok.io/capability-token')
     .then((data) => {
       log('Got a token.');
       console.log('Token: ' + data.token);

@@ -1,7 +1,8 @@
 var callRecord = require('../model/callRecordmodel');
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const ClientCapability = require('twilio').jwt.ClientCapability;
-var call_prefix = 'https://20ccee9f460f.ngrok.io/api'
+var call_prefix = 'https://c91de5a03c10.ngrok.io/api';
+
 var accountSid = 'ACf552fc032421766cefee39dd1e796e64';
 var authToken = '2cd08ac4a94e1b4779690815ffe828b5';
 
@@ -23,12 +24,10 @@ exports.outgoingCallTalk = (req,res) => {
 }
 
 exports.voicemail = (req,res) => {
-    console.log(req.body)
     console.log("DialCallStatus:"+req.body.DialCallStatus)
     var twiml = new VoiceResponse();
     if(req.body.DialCallStatus == 'completed'){
-        // twiml.say('your call is ended');
-        twiml.hangup();
+        res.send(twiml.toString())
     }else{
         twiml.say('Please leave a message on the call.\nPress the star key when finished.');
         twiml.record({
@@ -37,13 +36,11 @@ exports.voicemail = (req,res) => {
             maxLength: '20',
             finishOnKey: '*'
         });
-        console.log("voicemail response")
         res.send(twiml.toString());
     }
 }
 
 exports.voiceMailResponse = (req,res) => {
-    console.log(req.body)
     console.log("voiceMailResponse")
     var callRecords = new callRecord({
         from: req.body.From,

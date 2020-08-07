@@ -1,6 +1,7 @@
 var callRecord = require('../model/callRecordmodel');
 var VoiceResponse = require('twilio').twiml.VoiceResponse;
-var call_prefix = 'https://20ccee9f460f.ngrok.io/api'
+var call_prefix = 'https://c91de5a03c10.ngrok.io/api';
+
 var accountSid = 'ACf552fc032421766cefee39dd1e796e64';
 var authToken = '2cd08ac4a94e1b4779690815ffe828b5';
 
@@ -74,7 +75,6 @@ exports.outgoingCallResponse = (req,res) => {
 
 exports.outgoingCallRecording = (req,res) => {
     var client = require('twilio')(accountSid, authToken)
-    console.log("outgoing call recording")
 
     client.recordings
         .list({callSid: req.body.CallSid})
@@ -84,30 +84,37 @@ exports.outgoingCallRecording = (req,res) => {
 }
 
 exports.incoimgCallResponse = (req,res) => {
-    console.log("status "+req.body.CallStatus)
+    console.log("status "+req.body.CallStatus);
     
     if (req.body.CallStatus !== 'completed') {
        res.send('redirect to voicemail')
-    } else {
-        console.log(req.body)
-        var callRecords = new callRecord({
-            from: req.body.To,
-            to: req.body.From,
-            recordingUrl: req.body.RecordingUrl,
-            voicemailUrl: "",
-            duration: req.body.CallDuration,
-            price: ""
-        });
-        console.log("incoimg callrecords"+callRecords)
-        callRecords.save(callRecords)
-            .then(data => {
-                res.send(data);
-            })
-            .catch(err => {
-                res.status(500).send({
-                    message: err.message || "Some error occurred while store data in db"
+    } else { 
+        if(redirectToHanhup()){
+            var callRecords = new callRecord({
+                from: req.body.From,
+                to: req.body.To,
+                recordingUrl: req.body.RecordingUrl,
+                voicemailUrl: "",
+                duration: req.body.CallDuration,
+                price: ""
+            });
+            console.log("incoimg callrecords"+callRecords)
+            callRecords.save(callRecords)
+                .then(data => {
+                    res.send(data);
                 })
-            })
+                .catch(err => {
+                    res.status(500).send({
+                        message: err.message || "Some error occurred while store data in db"
+                    })
+                })
+        }
     }
 }
 
+function redirectToHanhup(){
+    var twiml = new VoiceResponse();
+    twiml.hangup();
+    console.log(twiml.toString())
+    return twiml.toString();
+}
